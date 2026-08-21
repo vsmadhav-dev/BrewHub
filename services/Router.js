@@ -7,13 +7,44 @@ const Router = {
                 Router.go(url1);
             });
         });
+        window.addEventListener('popstate', (event) => {
+            Router.go(event.state.route , false);
+        });
 
         Router.go(location.pathname, false);
     },
-    go: (route, addToHistory = true) => { // Fixed '==' to '='
+    go: (route, addToHistory = true) => {
         console.log(`Going to ${route}`);
         if (addToHistory) {
-            history.pushState({ route }, '', route);
+            history.pushState({route}, '', route);
+        }
+        let pageelement = null;
+        switch (route) {
+            case '/':
+                pageelement = document.createElement('h1');
+                pageelement.textContent = 'Menu'
+                break;
+            case '/order':
+                pageelement = document.querySelector('main');
+                pageelement = document.createElement('h1');
+                pageelement.textContent = "Your Order";
+                break;
+            default:
+                if(route.startsWith('/product/')) {
+                    pageelement = document.createElement('h1');
+                    pageelement.textContent = 'Details'
+                    const paramId = route.substring(route.lastIndexOf('-') + 1);
+                    pageelement.id = paramId;
+                    break;
+                }
+        }
+
+        if (pageelement) {
+            const cache = document.querySelector('main')
+            cache.innerHTML = "";
+            cache.appendChild(pageelement)
+            window.scrollX = 0;
+            window.scrollY = 0;
         }
     }
 };
