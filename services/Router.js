@@ -21,18 +21,18 @@ const Router = {
         let pageelement = null;
         switch (route) {
             case '/':
-                pageelement = document.createElement('h1');
-                pageelement.textContent = 'Menu'
+                pageelement = document.createElement('menu-page');
+
                 break;
             case '/order':
                 pageelement = document.querySelector('main');
-                pageelement = document.createElement('h1');
+
                 pageelement.textContent = "Your Order";
                 break;
             default:
                 if(route.startsWith('/product/')) {
-                    pageelement = document.createElement('h1');
-                    pageelement.textContent = 'Details'
+                    pageelement = document.createElement('details-page');
+
                     const paramId = route.substring(route.lastIndexOf('-') + 1);
                     pageelement.id = paramId;
                     break;
