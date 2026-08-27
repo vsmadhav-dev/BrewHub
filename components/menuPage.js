@@ -6,13 +6,11 @@ export class MenuPage extends HTMLElement {
         this.styles = document.createElement('style');
         this.root.appendChild(this.styles);
 
-         async function loadCss() {
-
-                const request = await  fetch('/components/MenuPage.css');
-                const css = await request.text();
-               this.styles.textContent = css;
-
-        }
+        const loadCss = async () => {
+            const request = await fetch('/components/MenuPage.css');
+            const css = await request.text();
+            this.styles.textContent = css;
+        };
         loadCss();
     }
 
@@ -42,12 +40,34 @@ export class MenuPage extends HTMLElement {
                     <ul class="category"></ul>
                 `;
                 menuContainer.appendChild(liCategory);
+                const categoryList = liCategory.querySelector('ul');
 
-                app.store.menu.forEach((item) => {
-                    const product = document.createElement('product-item');
-                    product.dataset.item = JSON.stringify(item)
-                   liCategory.querySelector('ul')
-                })
+                app.store.menu[i].products.forEach((item) => {
+                    const productTemplate = document
+                        .getElementById('product-item-template')
+                        .content
+                        .cloneNode(true);
+                    const productLink = productTemplate.querySelector('a');
+                    const productImage = productTemplate.querySelector('img');
+                    const productName = productTemplate.querySelector('h4');
+                    const productPrice = productTemplate.querySelector('.price');
+                    const addButton = productTemplate.querySelector('button');
+
+                    productLink.href = `/product/${item.name}-${item.id}`;
+                    productLink.addEventListener('click', (event) => {
+                        event.preventDefault();
+                        app.router.go(productLink.href);
+                    });
+                    productImage.src = `/data/images/${item.image}`;
+                    productImage.alt = item.name;
+                    productName.textContent = item.name;
+                    productPrice.textContent = `$${item.price.toFixed(2)}`;
+                    addButton.addEventListener('click', (event) => {
+                        event.preventDefault();
+                    });
+
+                    categoryList.appendChild(productTemplate);
+                });
             }
         } else {
             menuContainer.innerHTML = 'loading..';
