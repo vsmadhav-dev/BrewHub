@@ -2,13 +2,16 @@ export class MenuPage extends HTMLElement {
     constructor() {
         super();
         this.root = this.attachShadow({ mode: 'open' });
-        const styles = document.createElement('style');
-        this.root.appendChild(styles);
 
-        async function loadCss() {
-            const request = await fetch('/components/MenuPage.css');
-            const css = await request.text();
-            styles.textContent = css;
+        this.styles = document.createElement('style');
+        this.root.appendChild(this.styles);
+
+         async function loadCss() {
+
+                const request = await  fetch('/components/MenuPage.css');
+                const css = await request.text();
+               this.styles.textContent = css;
+
         }
         loadCss();
     }
@@ -39,6 +42,12 @@ export class MenuPage extends HTMLElement {
                     <ul class="category"></ul>
                 `;
                 menuContainer.appendChild(liCategory);
+
+                app.store.menu.forEach((item) => {
+                    const product = document.createElement('product-item');
+                    product.dataset.item = JSON.stringify(item)
+                   liCategory.querySelector('ul')
+                })
             }
         } else {
             menuContainer.innerHTML = 'loading..';
