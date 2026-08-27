@@ -1,7 +1,7 @@
 import Store from './services/Store.js';
 import API from './services/API.js';
 import {loadData} from "./services/menu.js";
-import Router from "./services/router.js";
+import Router from "./services/Router.js";
 import { MenuPage} from "./components/menuPage.js";
 import { DetailsPage} from "./components/DetailsPage.js";
 import{OrderPage} from "./components/OrderPage.js";

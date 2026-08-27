@@ -3,12 +3,13 @@ const Router = {
         document.querySelectorAll('a.navlink').forEach(a => {
             a.addEventListener('click', event => {
                 event.preventDefault();
-                const url1 = event.target.getAttribute('href');
+                const url1 = event.currentTarget.getAttribute('href');
                 Router.go(url1);
             });
         });
         window.addEventListener('popstate', (event) => {
-            Router.go(event.state.route , false);
+            const route = event.state?.route || '/';
+            Router.go(route, false);
         });
 
         Router.go(location.pathname, false);
