@@ -42,32 +42,11 @@ export class MenuPage extends HTMLElement {
                 menuContainer.appendChild(liCategory);
                 const categoryList = liCategory.querySelector('ul');
 
-                app.store.menu[i].products.forEach((item) => {
-                    const productTemplate = document
-                        .getElementById('product-item-template')
-                        .content
-                        .cloneNode(true);
-                    const productLink = productTemplate.querySelector('a');
-                    const productImage = productTemplate.querySelector('img');
-                    const productName = productTemplate.querySelector('h4');
-                    const productPrice = productTemplate.querySelector('.price');
-                    const addButton = productTemplate.querySelector('button');
-
-                    productLink.href = `/product/${item.name}-${item.id}`;
-                    productLink.addEventListener('click', (event) => {
-                        event.preventDefault();
-                        app.router.go(productLink.href);
-                    });
-                    productImage.src = `/data/images/${item.image}`;
-                    productImage.alt = item.name;
-                    productName.textContent = item.name;
-                    productPrice.textContent = `$${item.price.toFixed(2)}`;
-                    addButton.addEventListener('click', (event) => {
-                        event.preventDefault();
-                    });
-
-                    categoryList.appendChild(productTemplate);
-                });
+                app.store.menu.forEach((item) => {
+                    const product = document.createElement('product-item');
+                    product.dataset.item = JSON.stringify(item)
+                   liCategory.querySelector('ul')
+                })
             }
         } else {
             menuContainer.innerHTML = 'loading..';
