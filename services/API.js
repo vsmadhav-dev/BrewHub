@@ -1,7 +1,6 @@
 const API = {
-    url: "/data/menu.json" ,
     fetchMenu:  async() => {
-       const result  = await fetch(API.url)
+       const result  = await fetch(`${app.basePath}/data/menu.json`)
       return  await result.json()
     }
 }
