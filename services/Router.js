@@ -1,4 +1,29 @@
 const Router = {
+    getBasePath: () => app.basePath || '',
+    normalizeRoute: (route) => {
+        const candidateRoute = route || '/';
+        let path = new URL(candidateRoute, window.location.href).pathname;
+        const basePath = Router.getBasePath();
+
+        if (basePath && path.startsWith(`${basePath}/`)) {
+            path = path.substring(basePath.length);
+        } else if (basePath && path === basePath) {
+            path = '/';
+        }
+
+        if (!path.startsWith('/')) {
+            path = `/${path}`;
+        }
+        return path || '/';
+    },
+    toBrowserPath: (route) => {
+        const normalizedRoute = Router.normalizeRoute(route);
+        const basePath = Router.getBasePath();
+        if (normalizedRoute === '/') {
+            return basePath || '/';
+        }
+        return `${basePath}${normalizedRoute}`;
+    },
     init: () => {
         document.querySelectorAll('a.navlink').forEach(a => {
             a.addEventListener('click', event => {
@@ -8,19 +33,20 @@ const Router = {
             });
         });
         window.addEventListener('popstate', (event) => {
-            const route = event.state?.route || '/';
+            const route = event.state?.route || Router.normalizeRoute(location.pathname);
             Router.go(route, false);
         });
 
-        Router.go(location.pathname, false);
+        Router.go(Router.normalizeRoute(location.pathname), false);
     },
     go: (route, addToHistory = true) => {
-        console.log(`Going to ${route}`);
+        const normalizedRoute = Router.normalizeRoute(route);
+        console.log(`Going to ${normalizedRoute}`);
         if (addToHistory) {
-            history.pushState({route}, '', route);
+            history.pushState({route: normalizedRoute}, '', Router.toBrowserPath(normalizedRoute));
         }
         let pageelement = null;
-        switch (route) {
+        switch (normalizedRoute) {
             case '/':
                 pageelement = document.createElement('menu-page');
 
@@ -29,10 +55,10 @@ const Router = {
                 pageelement = document.createElement('order-page');
                 break;
             default:
-                if(route.startsWith('/product/')) {
+                if(normalizedRoute.startsWith('/product/')) {
                     pageelement = document.createElement('details-page');
 
-                    const paramId = route.substring(route.lastIndexOf('-') + 1);
+                    const paramId = normalizedRoute.substring(normalizedRoute.lastIndexOf('-') + 1);
                     pageelement.id = paramId;
                     break;
                 }
@@ -42,8 +68,7 @@ const Router = {
             const cache = document.querySelector('main')
             cache.innerHTML = "";
             cache.appendChild(pageelement)
-            window.scrollX = 0;
-            window.scrollY = 0;
+            window.scrollTo(0, 0);
         }
     }
 };

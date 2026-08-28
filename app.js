@@ -8,6 +8,8 @@ import{OrderPage} from "./components/OrderPage.js";
 import "./components/ProductItem.js";
 
 window.app = {}
+const scriptPath = new URL(import.meta.url).pathname;
+app.basePath = scriptPath.substring(0, scriptPath.lastIndexOf('/'));
 app.store = Store;
 app.router = Router;
 window.addEventListener("DOMContentLoaded" , async() => {
