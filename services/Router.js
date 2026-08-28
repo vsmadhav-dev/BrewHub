@@ -42,8 +42,7 @@ const Router = {
             const cache = document.querySelector('main')
             cache.innerHTML = "";
             cache.appendChild(pageelement)
-            window.scrollX = 0;
-            window.scrollY = 0;
+            window.scrollTo(0, 0);
         }
     }
 };
