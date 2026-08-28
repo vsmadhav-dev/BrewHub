@@ -7,7 +7,7 @@ export class MenuPage extends HTMLElement {
         this.root.appendChild(this.styles);
 
         const loadCss = async () => {
-            const request = await fetch('/components/MenuPage.css');
+            const request = await fetch(new URL('./MenuPage.css', import.meta.url));
             const css = await request.text();
             this.styles.textContent = css;
         };
