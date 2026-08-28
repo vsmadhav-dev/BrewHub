@@ -33,7 +33,7 @@ const Router = {
                     pageelement = document.createElement('details-page');
 
                     const paramId = route.substring(route.lastIndexOf('-') + 1);
-                    pageelement.id = paramId;
+                    pageelement.productId = paramId;
                     break;
                 }
         }
